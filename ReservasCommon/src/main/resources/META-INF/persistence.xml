@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence>
+	<persistence-unit name="RservasPU" transaction-type="RESOURCE_LOCAL">
+		<!-- EclipseLink -->
+		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+
+		<jta-data-source>jdbc/reservas</jta-data-source>
+
+		<class>entidades.Hotel</class>
+		<class>entidades.Cliente</class>
+		<class>entidades.Reserva</class>
+		<class>entidades.Tarjeta</class>
+		<class>entidades.TipoHabitacion</class>
+
+		<properties>
+			<property name="eclipselink.ddl-generation" value="create-or-extend-tables" />
+		</properties>
+	</persistence-unit>
+
+</persistence>
