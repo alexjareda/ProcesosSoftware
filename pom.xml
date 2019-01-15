@@ -18,5 +18,6 @@
   	<modules>
   		<module>ReservasBussines</module>
   		<module>ReservasCommon</module>
+  		<module>ReservasDao</module>
   	</modules>
 </project>
