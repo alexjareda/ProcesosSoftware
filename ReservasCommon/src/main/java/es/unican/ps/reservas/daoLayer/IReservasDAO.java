@@ -13,7 +13,7 @@ import es.unican.ps.reservas.entities.Reserva;
 public interface IReservasDAO {
 
 	public Reserva addReserva(Reserva r);
-	public Reserva getReserva(int id);
+	public Reserva getReserva(Long id);
 	public Reserva updateReserva(Reserva r);
 	public Reserva removeReserva(Reserva r);
 	

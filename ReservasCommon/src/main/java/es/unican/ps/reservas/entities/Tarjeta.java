@@ -2,8 +2,7 @@ package es.unican.ps.reservas.entities;
 
 import java.io.Serializable;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Clase que representa una tarjeta de pago
@@ -16,6 +15,8 @@ import javax.persistence.Id;
 public class Tarjeta implements Serializable{
 
 	//Atributos de la clase
+	@OneToOne
+	@JoinColumn(name="cliente_fk")
 	private Cliente cliente;
 	
 	@Id
@@ -28,7 +29,7 @@ public class Tarjeta implements Serializable{
 	
 	
 	public Tarjeta(){
-		
+		//Nothing
 	}
 	
 	/**
@@ -138,5 +139,14 @@ public class Tarjeta implements Serializable{
 	 */
 	public void setTipo(TipoTarjeta t){
 		this.tipo = t;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof Tarjeta) {
+			Tarjeta c = (Tarjeta)o;
+			return c.getNumero() == numero;	
+		}
+		return false;
 	}
 }

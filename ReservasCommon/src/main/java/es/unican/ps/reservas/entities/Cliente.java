@@ -2,8 +2,7 @@ package es.unican.ps.reservas.entities;
 
 import java.io.Serializable;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Clase que representa un cliente que realiza una reserva en un hotel
@@ -24,12 +23,19 @@ public class Cliente implements Serializable{
 	private String apellido1;
 	private String apellido2;
 	private String email;
+	
+	@OneToOne
+	@JoinColumn(name="hotel_fk")
+	private Hotel hotel;
+	
+	@OneToOne
+	@JoinColumn(name="Tarjeta_fk")
 	private Tarjeta tarjeta;
 	
 	
 	
 	public Cliente(){
-		
+		//Nothing
 	}
 	
 	/**

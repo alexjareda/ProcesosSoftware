@@ -29,7 +29,7 @@ public class TipoHabitacion implements Serializable{
 	
 	
 	public TipoHabitacion(){
-		
+		//Nothing
 	}
 	
 	/**
@@ -94,5 +94,14 @@ public class TipoHabitacion implements Serializable{
 	
 	public Long getId(){
 		return this.id;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof TipoHabitacion) {
+			TipoHabitacion c = (TipoHabitacion)o;
+			return c.getId().equals(id);	
+		}
+		return false;
 	}
 }

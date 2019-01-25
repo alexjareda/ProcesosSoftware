@@ -4,13 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 /**
  * Clase que representa un hotel, con un catalogo de habitaciones(disponibles o no)
@@ -18,7 +12,7 @@ import javax.persistence.OneToMany;
  * @author Alejandro Jareda & Guillermo Argumosa
  *
  */
-@SuppressWarnings({ "serial", "unused" })
+@SuppressWarnings({ "serial"})
 @Entity
 public class Hotel implements Serializable{
 
@@ -31,14 +25,20 @@ public class Hotel implements Serializable{
 	private String direccion;
 	private String localidad;
 	
-	//@OneToMany(mappedBy="habitaciones", fetch=FetchType.EAGER)
+	@OneToMany
+	@JoinColumn(name="Hotel_fk")
 	private List<TipoHabitacion> habitaciones;
 	
-	//@OneToMany(mappedBy="reservas", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="hotel")
+	@JoinColumn(name="Hotel_fk")
 	private List<Reserva> reservas;
 	
+	@OneToMany(mappedBy="hotel")
+	@JoinColumn(name="hotel_fk")
+	private List<Cliente> clientes;
+	
 	public Hotel() {
-		
+		//Nothing
 	}
 	
 	/**
@@ -114,7 +114,7 @@ public class Hotel implements Serializable{
 	}
 	
 	/**
-	 * Metodo getter de las habitaciones de un hotel
+	 * Metodo getter de los tipos de habitaciones de un hotel
 	 * @return La lista de los tipos de habitaciones de un hotel
 	 */
 	public List<TipoHabitacion> getHabitaciones(){
@@ -141,5 +141,22 @@ public class Hotel implements Serializable{
 	 */
 	public void setReservas(List<Reserva> reservs){
 		this.reservas = reservs;
+	}
+	
+	public List<Cliente> getClientes(){
+		return this.clientes;
+	}
+	
+	public void setClientes(List<Cliente> lista2){
+		this.clientes = lista2;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof Hotel) {
+			Hotel c = (Hotel)o;
+			return c.getId().equals(id) && c.getNombre().equals(nombre);	
+		}
+		return false;
 	}
 }

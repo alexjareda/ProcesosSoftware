@@ -4,12 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 
 /**
  * Clase que representa una reserva de habitaciones a un hotel
@@ -18,27 +13,39 @@ import javax.persistence.ManyToMany;
  *
  */
 
-@SuppressWarnings({ "serial", "unused" })
+@SuppressWarnings({ "serial"})
 @Entity
 public class Reserva implements Serializable{
 
 	//Atributos de la clase
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	
 	private Date fechaEntrada;
 	private Date fechaSalida;
 	private double importe;
+	
+	private static Long ultimaReserva;
+	
+	@OneToOne
+	@JoinColumn(name="cliente_fk")
 	private Cliente c;
+	
+	@OneToOne
+	@JoinColumn(name="tarjeta_fk")
 	private Tarjeta t;
 	
-	//@ManyToMany(mappedBy="reservaTipoHabitacion", fetch=FetchType.EAGER)
+	@ManyToOne
+	@JoinColumn(name="hotel_fk")
+	private Hotel hotel;
+	
+	@OneToMany(mappedBy="reserva")
+	@JoinColumn(name="reservaTipoHabitacion_fk")
 	private List<ReservaTipoHabitacion> lista;
 	
 	
 	public Reserva(){
-		
+		//Nothing
 	}
 	
 	/**
@@ -47,9 +54,12 @@ public class Reserva implements Serializable{
 	 * @param entrada Fecha de entrada al hotel
 	 * @param salida Fecha de salida al hotel
 	 */
-	public Reserva(int id, Date entrada, Date salida){
+	public Reserva(Date entrada, Date salida, Cliente c){
+		this.id = ultimaReserva+1;
 		this.fechaEntrada = entrada;
 		this.fechaSalida = salida;
+		this.c = c;
+		ultimaReserva++;
 	}
 	
 	/**
@@ -155,5 +165,26 @@ public class Reserva implements Serializable{
 	 */
 	public void setLista(List<ReservaTipoHabitacion> l){
 		this.lista = l;
+	}
+	
+	public Hotel getHotel(){
+		return this.hotel;
+	}
+	
+	public void setHotel(Hotel hotel){
+		this.hotel = hotel;
+	}
+	
+	public Long getUltimaReserva(){
+		return Reserva.ultimaReserva;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof Reserva) {
+			Reserva c = (Reserva)o;
+			return c.getId().equals(id);	
+		}
+		return false;
 	}
 }

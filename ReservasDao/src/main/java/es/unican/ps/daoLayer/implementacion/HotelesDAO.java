@@ -22,22 +22,49 @@ public class HotelesDAO implements IHotelesDAOLocal, IHotelesDAORemote{
 
 
 	public Hotel addHotel(Hotel h) {
-		em.persist(h);
-		return h;
+		if(em.find(Hotel.class, h.getNombre())== null){
+			em.persist(h);
+			return h;
+		}
+		return null;
 	}
 
+	@SuppressWarnings("unchecked")
 	public Hotel getHotel(String nombre) {
-		return em.find(Hotel.class, nombre);
+		Query q = em.createQuery("SELECT h FROM Hoteles h WHERE h.getNombre() = :nombre");
+		q.setParameter("nombre", nombre);
+		List<Hotel> lista = q.getResultList();
+		Hotel buscado = lista.get(0);
+		if (buscado != null)
+			return buscado;
+		return null;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Hotel> getHotelLocalidad(String loc) {
+		Query q = em.createQuery("SELECT h FROM Hoteles h WHERE h.getLocalidad() = :loc");
+		q.setParameter("loc", loc);
+		List<Hotel> lista = q.getResultList();
+		if (lista != null)
+			return lista;
+		return null;
 	}
 
 	public Hotel updateHotel(Hotel h) {
-		return em.merge(h);
+		if(em.find(Hotel.class, h.getNombre())== null){
+			em.merge(h);
+			return h;
+		}
+		return null;	
 	}
 
 	public Hotel removeHotel(Hotel h) {
-		Hotel devolver = em.merge(h); 
-		em.remove(h);
-		return devolver;
+		if(em.find(Hotel.class, h.getNombre())== null){
+			Hotel devolver = h;
+			em.remove(h);
+			return devolver;
+		}
+		return null;
 	}
 
 	@SuppressWarnings("unchecked")

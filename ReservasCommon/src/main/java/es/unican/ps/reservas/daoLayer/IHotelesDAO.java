@@ -16,6 +16,7 @@ public interface IHotelesDAO {
 	public Hotel getHotel(String nombre);
 	public Hotel updateHotel(Hotel h);
 	public Hotel removeHotel(Hotel h);
+	public List<Hotel> getHotelLocalidad(String loc);
 	
 	public List<Hotel> listHoteles();
 }

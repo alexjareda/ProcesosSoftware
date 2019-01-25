@@ -2,8 +2,7 @@ package es.unican.ps.reservas.entities;
 
 import java.io.Serializable;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Clase que representa una reserva de un tipo de habitacion concreto
@@ -20,13 +19,19 @@ public class ReservaTipoHabitacion implements Serializable{
 	@Id
 	private Long id;
 	
+	@ManyToOne
+	@JoinColumn(name="reserva_fk")
+	private Reserva reserva;
+	
+	@OneToOne
+	@JoinColumn(name="tipoHabitacion_fk")
+	private TipoHabitacion tipo;
 	private int habitaciones;
-	private int numReserva;
 	
 	
 	
 	public ReservaTipoHabitacion(){
-		
+		//Nothing
 	}
 	
 	/**
@@ -34,9 +39,8 @@ public class ReservaTipoHabitacion implements Serializable{
 	 * @param habs Habitaciones de la reserva
 	 * @param id Numero id de la reserva
 	 */
-	public ReservaTipoHabitacion(int habs, int id){
+	public ReservaTipoHabitacion(int habs){
 		this.habitaciones = habs;
-		this.numReserva = id;
 	}
 
 	/**
@@ -55,22 +59,38 @@ public class ReservaTipoHabitacion implements Serializable{
 	}
 
 	/**
-	 * Metodo getter del numero id de la reserva
-	 * @return Numero id de la reserva
+	 * Metodo getter de la reserva
+	 * @return La reserva
 	 */
-	public int getNumReserva() {
-		return numReserva;
+	public Reserva getReserva() {
+		return reserva;
 	}
 
 	/**
-	 * Metodo setter del numero de la reserva 
+	 * Metodo setter de la reserva 
 	 */
-	public void setNumReserva(int numReserva) {
-		this.numReserva = numReserva;
+	public void setReserva(Reserva reserva) {
+		this.reserva = reserva;
 	}
 	
 	public Long getId(){
 		return this.id;
 	}
 	
+	public TipoHabitacion getTipoHabitacion(){
+		return this.tipo;
+	}
+	
+	public void setTipoHabitacion(TipoHabitacion t){
+		this.tipo = t;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof ReservaTipoHabitacion) {
+			ReservaTipoHabitacion c = (ReservaTipoHabitacion)o;
+			return c.getId().equals(id);	
+		}
+		return false;
+	}
 }
